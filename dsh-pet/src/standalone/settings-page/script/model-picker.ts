@@ -26,7 +26,7 @@ function openModelMenu(trigger) {
     (picked) => {
       byId('model').value = picked;
       markDirty(true);
-      setStatus(byId('model-result'), '已填入模型名称，记得保存。', 'ok');
+      setStatus(byId('model-result'), 'Đã điền tên model, nhớ bấm lưu.', 'ok');
     },
     byId('model-combo'),
   );
@@ -40,7 +40,7 @@ function forgetModelOptions() {
 async function fetchModelOptions(trigger) {
   const result = byId('model-result');
   trigger.disabled = true;
-  setStatus(result, '正在向端点请求模型列表…');
+  setStatus(result, 'Đang lấy danh sách model…');
   try {
     const response = await fetch(AI_MODELS_URL, {
       method: 'POST',
@@ -53,17 +53,17 @@ async function fetchModelOptions(trigger) {
         apiKey: byId('apiKey').value,
       }),
     });
-    if (response.status === 403) throw new Error('打开凭据已失效。请从桌宠菜单重新打开设置。');
+    if (response.status === 403) throw new Error('Phiên mở cài đặt đã hết hạn. Hãy mở lại cài đặt từ menu thú cưng.');
     const data = await response.json().catch(() => null);
-    if (!data) throw new Error('本机接口没有返回结果，请重试。');
-    if (!data.ok) throw new Error(data.message || '拉取失败');
+    if (!data) throw new Error('Máy chủ cục bộ không trả kết quả, thử lại.');
+    if (!data.ok) throw new Error(data.message || 'Lấy danh sách thất bại');
     const models = data.models || [];
     if (!models.length) {
-      setStatus(result, '端点没有返回任何模型，请手动填写。', 'error');
+      setStatus(result, 'Không có model nào được trả về, hãy nhập tay.', 'error');
       return;
     }
     modelOptions = models.map((model) => ({ value: model.id, label: modelLabel(model) }));
-    setStatus(result, '已拉取 ' + models.length + ' 个模型，选中即可填入。', 'ok');
+    setStatus(result, 'Đã lấy ' + models.length + ' model, chọn để điền vào.', 'ok');
     openModelMenu(trigger);
   } catch (error) {
     setStatus(result, error && error.message ? error.message : String(error), 'error');

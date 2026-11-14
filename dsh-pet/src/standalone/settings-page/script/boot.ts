@@ -18,7 +18,7 @@ function mountProtocolSelect() {
   if (!host) return;
   protocolSelect = createSelect(
     [
-      { value: 'openai-compatible', label: 'OpenAI 兼容' },
+      { value: 'openai-compatible', label: 'Tương thích OpenAI' },
       { value: 'anthropic', label: 'Anthropic' },
     ],
     'openai-compatible',
@@ -33,8 +33,8 @@ function mountBalanceSelect() {
   if (!host) return;
   balanceSelect = createSelect(
     [
-      { value: '', label: '不查询余额' },
-      { value: 'deepseek-official', label: 'DeepSeek 官方' },
+      { value: '', label: 'Không xem số dư' },
+      { value: 'deepseek-official', label: 'DeepSeek chính thức' },
       { value: 'opencode-go', label: 'opencode Go' },
       { value: 'commandcode', label: 'commandcode' },
     ],
@@ -112,11 +112,11 @@ async function loadVoiceCatalog() {
 
 async function loadPets() {
   const status = byId('pet-status');
-  setStatus(status, '正在读取本机配置…');
+  setStatus(status, 'Đang đọc cấu hình trên máy…');
   try {
     const config = await callApi('GET', '/config');
     const meta = await callApi('GET', '/config/meta').catch(() => null);
-    if (!config || config.ok === false || !config.main) throw new Error('读取配置失败：宿主没有返回可用的配置。');
+    if (!config || config.ok === false || !config.main) throw new Error('Đọc cấu hình thất bại: không nhận được cấu hình hợp lệ.');
     state.meta = meta;
     initDrafts(config);
     renderPetsPanel();
@@ -132,7 +132,7 @@ async function loadAi() {
   try {
     populateAi(await aiRequest('GET'));
     byId('save').disabled = false;
-    setStatus(status, '设置只在本机保存。');
+    setStatus(status, 'Cài đặt chỉ lưu trên máy này.');
   } catch (error) {
     setStatus(status, (error && error.message) || String(error), 'error');
   }

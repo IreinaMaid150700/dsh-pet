@@ -12,14 +12,14 @@ const PAGE_LIMIT = 1000;
 
 /** 失败分类对应的可操作说明；响应正文与密钥一律不进文案。 */
 const FAILURE_TEXT: Record<string, string | undefined> = {
-  input: '请先填写接口地址与 API 密钥',
-  auth: '身份验证失败 (HTTP 401/403)：请检查 API 密钥是否正确',
-  'rate-limit': '请求受限或配额超限 (HTTP 429)：请检查账户余额或调用频率',
-  'not-found': '该地址下没有模型列表 (HTTP 404)：请检查地址是否以 /v1 结尾',
-  contract: '端点返回的不是模型列表：请确认协议选择与服务商一致',
-  timeout: '连接超时（10 秒未响应）：请检查网络连通性或服务器状态',
-  network: '无法连接到目标服务器：请检查地址与端口是否正确',
-  http: '接口返回了错误状态：请检查地址与凭据',
+  input: 'Hãy nhập địa chỉ API và API key trước',
+  auth: 'Xác thực thất bại (HTTP 401/403): kiểm tra API key có đúng không',
+  'rate-limit': 'Bị giới hạn hoặc vượt hạn mức (HTTP 429): kiểm tra số dư tài khoản hoặc tần suất gọi',
+  'not-found': 'Địa chỉ này không có danh sách model (HTTP 404): kiểm tra địa chỉ có kết thúc bằng /v1 không',
+  contract: 'Dữ liệu trả về không phải danh sách model: kiểm tra giao thức đã chọn có khớp nhà cung cấp không',
+  timeout: 'Hết thời gian chờ (10 giây không phản hồi): kiểm tra mạng hoặc trạng thái máy chủ',
+  network: 'Không kết nối được máy chủ: kiểm tra địa chỉ và cổng có đúng không',
+  http: 'API trả về trạng thái lỗi: kiểm tra địa chỉ và thông tin xác thực',
 };
 
 /** 判定一个值是不是普通对象。 */
@@ -125,7 +125,8 @@ async function requestList(
   } catch {
     return failure('contract');
   }
-  if (text.length > MAX_DISCOVERY_BYTES) return failure('contract', '端点返回的模型列表过大，请改用支持分页的地址');
+  if (text.length > MAX_DISCOVERY_BYTES)
+    return failure('contract', 'Danh sách model trả về quá lớn, hãy dùng địa chỉ hỗ trợ phân trang');
   let payload: unknown;
   try {
     payload = JSON.parse(text);
@@ -152,10 +153,11 @@ export async function discoverModels(
     input.protocol === 'anthropic' || input.protocol === 'openai-compatible' ? input.protocol : current.protocol;
   const rawBase = (input.baseUrl !== undefined ? input.baseUrl : current.baseUrl).trim();
   const apiKey = (input.apiKey !== undefined && input.apiKey !== '' ? input.apiKey : current.apiKey).trim();
-  if (rawBase === '') return failure('input', '请先填写接口地址（Base URL）');
-  if (apiKey === '') return failure('input', '请先填写 API 密钥');
+  if (rawBase === '') return failure('input', 'Hãy nhập địa chỉ API (Base URL) trước');
+  if (apiKey === '') return failure('input', 'Hãy nhập API key trước');
   const base = parseEndpoint(rawBase);
-  if (base === undefined) return failure('input', '接口地址必须是 HTTP(S) 地址，且不能含账号、查询参数或片段');
+  if (base === undefined)
+    return failure('input', 'Địa chỉ API phải là HTTP(S), không chứa tài khoản, tham số truy vấn hay fragment');
 
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), DISCOVERY_TIMEOUT_MS);

@@ -108,9 +108,9 @@ async function callApi(method, path, body) {
   });
   const data = await response.json().catch(() => null);
   if (!response.ok) {
-    if (response.status === 403) throw new Error('打开凭据已失效，请从桌宠菜单重新打开设置。');
-    if (response.status === 429) throw new Error('保存过于频繁，请稍等一分钟再试。');
-    throw new Error((data && (data.message || data.error)) || '本机接口暂时无法处理请求');
+    if (response.status === 403) throw new Error('Phiên mở cài đặt đã hết hạn, hãy mở lại cài đặt từ menu thú cưng.');
+    if (response.status === 429) throw new Error('Lưu quá nhiều lần, chờ một phút rồi thử lại.');
+    throw new Error((data && (data.message || data.error)) || 'Máy chủ cục bộ tạm thời không xử lý được yêu cầu');
   }
   return data;
 }

@@ -10,13 +10,15 @@ import { fr } from './fr.ts';
 import { ja } from './ja.ts';
 import { pt } from './pt.ts';
 import { ru } from './ru.ts';
+import { vi } from './vi.ts';
 import { zh } from './zh.ts';
 
 /** 字典命名空间。 */
 export const NS = 'pet.chat';
 
 /** 按宿主语言 id 汇总的字典，整包交给 `ctx.locale.register`。 */
-export const dicts = { zh, en, ja, es, fr, de, ru, pt };
+export const dicts = { zh, en, ja, es, fr, de, ru, pt, vi };
 
 export { zh } from './zh.ts';
+export { vi } from './vi.ts';
 export type { Key } from './zh.ts';

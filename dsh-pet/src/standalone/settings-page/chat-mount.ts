@@ -10,7 +10,7 @@
 import { createElement, useEffect, useRef, useState, type FC } from 'react';
 import { createRoot } from 'react-dom/client';
 import { jsx } from 'react/jsx-runtime';
-import { zh } from '../../client/chat/locales/index.ts';
+import { vi } from '../../client/chat/locales/index.ts';
 import { makePetChatPanel } from '../../client/chat/panel.ts';
 import type { ChatPanelRuntime } from '../../client/chat/runtime.ts';
 import { createTranslator } from './translate.ts';
@@ -29,7 +29,7 @@ const runtime: ChatPanelRuntime = {
   useState,
   useEffect,
   useRef,
-  t: createTranslator(zh),
+  t: createTranslator(vi),
 };
 
 const host = document.getElementById(HOST_ID);
